@@ -78,15 +78,6 @@
         expires.setTime(expires.getTime() - 100);
         document.cookie = name + '=' + value + '; expires=' + expires.toUTCString() + '; path=' + path + '; domain=' + domain;
     }
-	
-	//Added Tr0nYx to get rid of duplicate g+ and pinterest js files -.-
-	function requireOnce(url) {    
-		if (!$("script[src='" + url + "']").length) {
-			alert(url);
-			$('body').append("<script type='text/javascript' src='" + url + "'></script>"); 
-		}
-	}
-	//Tr0nYx End
 
     // extend jquery with our plugin function
     $.fn.socialSharePrivacy = function (settings) {
@@ -155,7 +146,7 @@
         var facebook_on = (options.services.facebook.status === 'on');
         var twitter_on  = (options.services.twitter.status  === 'on');
         var gplus_on    = (options.services.gplus.status    === 'on');
-		var pinterest_on    = (options.services.pinterest.status    === 'on');
+				var pinterest_on    = (options.services.pinterest.status    === 'on');
 
         // check if at least one service is "on"
         if (!facebook_on && !twitter_on && !gplus_on && !pinterest_on) {
@@ -250,9 +241,7 @@
                 var gplus_uri = uri + options.services.gplus.referrer_track;
                 
                 // we use the Google+ "asynchronous" code, standard code is flaky if inserted into dom after load
-                //var gplus_code = '<div class="g-plusone" data-size="medium" data-href="' + gplus_uri + '"></div><script type="text/javascript">window.___gcfg = {lang: "' + options.services.gplus.language + '"}; (function() { var po = document.createElement("script"); po.type = "text/javascript"; po.async = true; po.src = "https://apis.google.com/js/plusone.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s); })(); </script>';
-				var gplus_code = '<div class="g-plusone" data-size="medium" data-href="' + gplus_uri + '"></div>';
-				include("https://apis.google.com/js/plusone.js");
+                var gplus_code = '<div class="g-plusone" data-size="medium" data-href="' + gplus_uri + '"></div><script type="text/javascript">window.___gcfg = {lang: "' + options.services.gplus.language + '"}; (function() { var po = document.createElement("script"); po.type = "text/javascript"; po.async = true; po.src = "https://apis.google.com/js/plusone.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s); })(); </script>';
                 var gplus_dummy_btn = '<img src="' + options.services.gplus.dummy_img + '" alt="&quot;Google+1&quot;-Dummy" class="gplus_one_dummy" />';
 
                 context.append('<li class="gplus help_info"><span class="info">' + options.services.gplus.txt_info + '</span><span class="switch off">' + options.services.gplus.txt_gplus_off + '</span><div class="gplusone dummy_btn">' + gplus_dummy_btn + '</div></li>');
@@ -272,15 +261,16 @@
                 });
             }
 
-			if (pinterest_on) {
-                var pinterest_url = encodeURIComponent(uri + options.services.pinterest.referrer_track);
-				var pinterest_pic = $('meta[property="og:image"]').attr('content');
-				var pinterest_desc = $('meta[name=description]').attr('content');
-				include("https://assets.pinterest.com/js/pinit.js");
-                //var pinterest_button = '<div class="pin-it-button"><a href="http://pinterest.com/pin/create/button/?url=' + pinterest_url + "&media=" + pinterest_pic + "&description=" + pinterest_desc + '" class="pin-it-button" always-show-count="true" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a></div><script type="text/javascript">(function() { var po = document.createElement("script"); po.type = "text/javascript"; po.async = true; po.src = "https://assets.pinterest.com/js/pinit.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s); })(); </script>';
-				var pinterest_button = '<div class="pin-it-button"><a href="http://pinterest.com/pin/create/button/?url=' + pinterest_url + "&media=" + pinterest_pic + "&description=" + pinterest_desc + '" class="pin-it-button" always-show-count="true" count-layout="horizontal" always-show-count="1"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a></div>';
+            //
+            // Pin Terest
+            //
+						if (pinterest_on) {
+								var pinterest_url = encodeURIComponent(uri + options.services.pinterest.referrer_track);
+								var pinterest_pic = $('meta[property="og:image"]').attr('content');
+								var pinterest_desc = $('meta[name=description]').attr('content');
+								var pinterest_button = '<div class="pin-it-button"><a href="http://pinterest.com/pin/create/button/?url=' + pinterest_url + "&media=" + pinterest_pic + "&description=" + pinterest_desc + '" class="pin-it-button" always-show-count="true" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a></div><script type="text/javascript">(function() { var po = document.createElement("script"); po.type = "text/javascript"; po.async = true; po.src = "https://assets.pinterest.com/js/pinit.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s); })(); </script>';
                 var pinterest_image = '<img src="' + options.services.pinterest.dummy_img + '" alt="&quot;Pinterest&quot;-Dummy" class="pinterest_dummy" />';
-                context.append('<li class="pinterest help_info"><span class="info">' + options.services.pinterest.txt_info + '</span><span class="switch off">' + options.services.pinterest.txt_pinterest_off + '</span><div class="pinterest dummy_btn">' + pinterest_image + "</div></li>");
+								context.append('<li class="pinterest help_info"><span class="info">' + options.services.pinterest.txt_info + '</span><span class="switch off">' + options.services.pinterest.txt_pinterest_off + '</span><div class="pinterest dummy_btn">' + pinterest_image + "</div></li>");
                 var $container_pinterest = $("li.pinterest", context);
                 $("li.pinterest div.pinterest img,li.pinterest span.switch", context).live("click", function () {
                     if ($container_pinterest.find("span.switch").hasClass("off")) {
@@ -295,31 +285,18 @@
                 })
             }
 			
-			// for (var k = 0, len = scripts.length; k < len; k++)
-			// {
-				// var elem = document.createElement('script');
-				// elem.type = 'text/javascript';
-				// elem.async = true;
-				// elem.src = scripts[k];
-				// console.log('%o',elem);
-				// var s = document.getElementsByTagName('script')[0];
-				// //$('body').append( elem );
-				// s.parentNode.insertBefore(elem, s);
-			// }
-
-			
             //
             // Der Info/Settings-Bereich wird eingebunden
             //
             context.append('<li class="settings_info"><div class="settings_info_menu off perma_option_off"><a href="' + options.info_link + '"><span class="help_info icon"><span class="info">' + options.txt_help + '</span></span></a></div></li>');
 
             // Info-Overlays mit leichter Verzoegerung einblenden
-            $('.help_info:not(.info_off)', context).live('mouseenter', function () {
+            $('.help_info:not(.info_off)', context).mouseleave(function () {
                 var $info_wrapper = $(this);
                 var timeout_id = window.setTimeout(function () { $($info_wrapper).addClass('display'); }, 500);
                 $(this).data('timeout_id', timeout_id);
             });
-            $('.help_info', context).live('mouseleave', function () {
+            $('.help_info', context).mouseleave(function () {
                 var timeout_id = $(this).data('timeout_id');
                 window.clearTimeout(timeout_id);
                 if ($(this).hasClass('display')) {
@@ -330,14 +307,14 @@
             var facebook_perma = (options.services.facebook.perma_option === 'on');
             var twitter_perma  = (options.services.twitter.perma_option  === 'on');
             var gplus_perma    = (options.services.gplus.perma_option    === 'on');
-			var pinterest_perma  = (options.services.pinterest.perma_option  === 'on');
+						var pinterest_perma  = (options.services.pinterest.perma_option  === 'on');
 
             // Menue zum dauerhaften Einblenden der aktiven Dienste via Cookie einbinden
             // Die IE7 wird hier ausgenommen, da er kein JSON kann und die Cookies hier ueber JSON-Struktur abgebildet werden
             if (((facebook_on && facebook_perma)
                 || (twitter_on && twitter_perma)
                 || (gplus_on && gplus_perma)
-				|| (pinterest_on && pinterest_perma))
+								|| (pinterest_on && pinterest_perma))
                     && (!$.browser.msie || ($.browser.msie && $.browser.version > 7.0))) {
 
                 // Cookies abrufen
@@ -393,7 +370,7 @@
                     );
                 }
 
-				if (pinterest_on && pinterest_perma) {
+								if (pinterest_on && pinterest_perma) {
                     var perma_status_pinterest = cookies.socialSharePrivacy_gplus === 'perma_on' ? checked : '';
                     $container_settings_info.find('form fieldset').append(
                         '<input type="checkbox" name="perma_status_pinterest" id="perma_status_pinterest"'
@@ -441,7 +418,7 @@
                 if (gplus_on && gplus_perma && cookies.socialSharePrivacy_gplus === 'perma_on') {
                     $('li.gplus span.switch', context).click();
                 }
-				if (pinterest_on && pinterest_perma && cookies.socialSharePrivacy_pinterest === 'perma_on') {
+								if (pinterest_on && pinterest_perma && cookies.socialSharePrivacy_pinterest === 'perma_on') {
                     $('li.pinterest span.switch', context).click();
                 }
             }
